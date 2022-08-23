@@ -35,7 +35,7 @@ The program needs the following python libraries:
     - For UNIX shells:
         `$ python3 -m pip install pyephem tk datetime matplotlib`
     - For Windows CMD:
-        - Open the command prompt (`WIN+R`, type `cmd.ex` and press enter)
+        - Open the command prompt (`WIN+R`, type `cmd.exe` and press enter)
         - Run the following command (paste it in the cmd and press enter):
         `pip install pyephem tk datetime matplotlib`
 
