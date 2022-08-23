@@ -2,6 +2,8 @@
 Python GUI program to calculate the solar noon in a given location, both at a given date or from today up to a certain date.
 
 ## Usage:
+- Navigate inside the folder of the program
+- Run the program by double clicking on `solarNoonCalculator.py` (or run it from the command line: `$ python3 solarNoonCalculator.py`): the GUI should appear
 - Specify the coordinates of the location in which the solar noon is to be evaluated:
     - Use the decimal degrees checkbox and input boxes, or the deg/prime/sec ones, according to your preference;
 - Specify the mode:
@@ -33,6 +35,8 @@ The program needs the following python libraries:
     - For UNIX shells:
         `$ python3 -m pip install pyephem tk datetime matplotlib`
     - For Windows CMD:
+        - Open the command prompt (`WIN+R`, type `cmd.ex` and press enter)
+        - Run the following command (paste it in the cmd and press enter):
         `pip install pyephem tk datetime matplotlib`
 
 ## Screenshots:
