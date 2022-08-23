@@ -289,7 +289,7 @@ class gui:
             # create the end date input box
             self.string = tk.StringVar()
             self.string.set(
-                'Insert the date up to which calculate the solar noons\n(yy/mm/dd):')
+                'Insert the date up to which calculate the solar noons\n(yyyy/mm/dd):')
             self.string = tk.Label(textvariable=self.string)
             self.string.grid(row=row, column=column, columnspan=10)
             row += 1
