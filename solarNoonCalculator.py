@@ -384,11 +384,15 @@ class gui:
             today = ephem.localtime(today).date()
             # iterate over the dates
             for day in daterange(today, stopDate+dt.timedelta(1)):
-                # store values
+                # Convert date to string
                 dateStr = str(day)
+                # store date values
                 dates.append(dateStr)
+                # Add an arbitrary time to the date
                 dateStr += " 9:00"
+                # Convert date to ephem.date object
                 dayEphem = ephem.date(dateStr)
+                # Evaluate solar noon of the date and store it
                 times.append(
                     str(getNoon(dayEphem, lat, long).time().strftime('%Hh %Mm %S.%fs')))
                 # convert hour/min/sec to decimal hours for the graph
