@@ -385,9 +385,12 @@ class gui:
             # iterate over the dates
             for day in daterange(today, stopDate+dt.timedelta(1)):
                 # store values
-                dates.append(str(day))
+                dateStr = str(day)
+                dates.append(dateStr)
+                dateStr += " 9:00"
+                dayEphem = ephem.date(dateStr)
                 times.append(
-                    str(getNoon(day, lat, long).time().strftime('%Hh %Mm %S.%fs')))
+                    str(getNoon(dayEphem, lat, long).time().strftime('%Hh %Mm %S.%fs')))
                 # convert hour/min/sec to decimal hours for the graph
                 graphValues = str(getNoon(day, lat, long).time())
                 h = float(graphValues.split(":")[0])
