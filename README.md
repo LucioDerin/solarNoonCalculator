@@ -1,5 +1,5 @@
 ## Solar Noon Calculator
-Python GUI program to calculate the solar noon in a given location, both at a given date or from today up to a certain date.
+Python GUI program to calculate the solar noon in a given location, both at a given date or between two dates.
 
 ## Usage:
 - Navigate inside the folder of the program
@@ -8,8 +8,8 @@ Python GUI program to calculate the solar noon in a given location, both at a gi
     - Use the decimal degrees checkbox and input boxes, or the deg/prime/sec ones, according to your preference;
 - Specify the mode:
     - Today Solar Noon calculates the current date solar noon, and prints the result on the GUI;
-    - Solar Noon up to a certain date:
-        - Specify the end date up to which the solar noons have to be evaluated;
+    - Solar Noons between two dates:
+        - Specify the start and end dates between whose the solar noons have to be evaluated;
         - The results are written in a `.csv` file named `result.csv`, and the time equation is displayed on the GUI;
 
 ## Dependencies:

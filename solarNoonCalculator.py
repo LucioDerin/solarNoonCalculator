@@ -68,7 +68,7 @@ class gui:
     def __init__(self):
         # window
         self.window = tk.Tk()
-        self.window.geometry("400x600")
+        self.window.geometry("400x650")
         self.window.title("Solar Noon Calculator")
 
         # title
@@ -197,7 +197,7 @@ class gui:
 
         row += 1
         column = 0
-        self.modes = ['Today Solar Noon', 'Solar Noon up to a certain date']
+        self.modes = ['Today Solar Noon', 'Solar Noons between two dates']
         self.selectedMode = tk.StringVar()
         self.selectedMode.set('Options')
         self.modeMenu = tk.OptionMenu(self.window, self.selectedMode, *self.modes,
@@ -252,7 +252,7 @@ class gui:
     def _manageModes(self, row, value):
         '''
         Manages the modes selected through the dropdown menu: if 'Today Solar Noon' mode is selected,
-        just draws the calculate button; if 'Solar Noon up to a certain date' mode is selected,
+        just draws the calculate button; if 'Solar Noons between two dates' mode is selected,
         draws the end date input box and the calculate button.
         If mode is changed and there was a previous selection/result, it cleans them.
         Parameters:
@@ -268,7 +268,7 @@ class gui:
         except:
             pass
         try:
-            self.date.destroy()
+            self.endDate.destroy()
         except:
             pass
         try:
@@ -285,7 +285,18 @@ class gui:
             pass
 
         # mode distinction
-        if value == 'Solar Noon up to a certain date':
+        if value == 'Solar Noons between two dates':
+            # create the begin date input box
+            self.string = tk.StringVar()
+            self.string.set(
+                'Insert the starting date from which calculate the solar noons\n(yyyy/mm/dd):')
+            self.string = tk.Label(textvariable=self.string)
+            self.string.grid(row=row, column=column, columnspan=10)
+            row += 1
+            column = 0
+            self.beginDate = tk.Entry(width=20)
+            self.beginDate.grid(row=row, column=column, columnspan=10)
+            row += 1
             # create the end date input box
             self.string = tk.StringVar()
             self.string.set(
@@ -294,8 +305,8 @@ class gui:
             self.string.grid(row=row, column=column, columnspan=10)
             row += 1
             column = 0
-            self.date = tk.Entry(width=20)
-            self.date.grid(row=row, column=column, columnspan=10)
+            self.endDate = tk.Entry(width=20)
+            self.endDate.grid(row=row, column=column, columnspan=10)
             row += 1
             # create the calculate button
             self.calcButton = tk.Button(
@@ -313,7 +324,7 @@ class gui:
     def _getNoon(self, row):
         '''
         Calculates the solar noon from the input data and mode selection, then displays the result 
-        (and saves them in a file if the mode is solar noon up to a certain date).
+        (and saves them in a file if the mode is solar noons between two dates).
         Parameters:
             @ row: last row occupied by the widgets;
         '''
@@ -361,12 +372,12 @@ class gui:
             self.result.set(temp)
             self.result = tk.Label(textvariable=self.result)
             self.result.grid(row=row, column=0, columnspan=10)
-        # if 'Solar Noon up to a certain date' mode, calculate all the solar noons,
+        # if 'Solar Noons between two dates' mode, calculate all the solar noons,
         # write them in a file and display the time equation graph
         else:
             # check if end date was given correctly
             # if not, return
-            if not self.date.get():
+            if not self.endDate.get():
                 messagebox.showerror(
                     "Error!", message="You must specify the date!")
                 return
@@ -375,15 +386,17 @@ class gui:
             dates = []
             times = []
             hours = []
+            # read the begin date
+            # get today date
+            startDate = self.beginDate.get()
+            startDate = dt.date(int(startDate.split(
+                "/")[0]), int(startDate.split("/")[1]), int(startDate.split("/")[2]))
             # read the end date
-            stopDate = self.date.get()
+            stopDate = self.endDate.get()
             stopDate = dt.date(int(stopDate.split(
                 "/")[0]), int(stopDate.split("/")[1]), int(stopDate.split("/")[2]))
-            # get today date
-            today = ephem.now()
-            today = ephem.localtime(today).date()
             # iterate over the dates
-            for day in daterange(today, stopDate+dt.timedelta(1)):
+            for day in daterange(startDate, stopDate+dt.timedelta(1)):
                 # Convert date to string
                 dateStr = str(day)
                 # store date values
@@ -421,7 +434,7 @@ class gui:
             self.result.set(
                 "Results have been written in the file 'result.csv'")
             self.result = tk.Label(textvariable=self.result)
-            self.result.grid(row=row, column=0, columnspan=10)
+            self.result.grid(row=row+1, column=0, columnspan=10)
 
             # get rid of the discontinuity due to the legal hour in
             # the time dependance of the solar noons
@@ -438,7 +451,7 @@ class gui:
             self.subplot.set_xlabel("Time [days]")
             self.subplot.set_ylabel("Solar Noon Hour")
             self.subplot.plot(
-                [i for i in range(0, (stopDate-today).days+1)], hours)
+                [i for i in range(0, (stopDate-startDate).days+1)], hours)
             self.canvas.draw_idle()
             self.canvas.get_tk_widget().grid(row=13, columnspan=10)
             self.figure.tight_layout()
